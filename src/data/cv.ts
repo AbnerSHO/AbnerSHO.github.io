@@ -3,7 +3,16 @@ import type { ImageMetadata } from 'astro';
 import cascada from '../assets/photos/cascada.jpg';
 import lago from '../assets/photos/lago.jpg';
 import legoRobot from '../assets/photos/lego-robot.jpg';
+import escritorio from '../assets/photos/escritorio.jpg';
+import alebrije from '../assets/photos/alebrije.jpg';
+import gatitos from '../assets/photos/gatitos.jpg';
+import teclado from '../assets/photos/teclado.jpg';
+import cempasuchil from '../assets/photos/cempasuchil.jpg';
+import playa from '../assets/photos/playa.jpg';
+import niebla from '../assets/photos/niebla.jpg';
+import caracol from '../assets/photos/caracol.jpg';
 import burbujas from '../assets/photos/burbujas.jpg';
+import albercaMar from '../assets/photos/alberca-mar.jpg';
 
 export interface Role {
   title: string;
@@ -24,9 +33,20 @@ export interface ImpactCard {
   photo: ImageMetadata;
   photoAlt: string;
   kicker: string;
+  metric: string;
   title: string;
+  description: string;
   /** Etiquetas que entran deslizándose al hacer hover (efecto "julia"). */
   reveals: string[];
+  wide?: boolean;
+}
+
+export interface GalleryPhoto {
+  photo: ImageMetadata;
+  alt: string;
+  caption: string;
+  tall?: boolean;
+  wide?: boolean;
 }
 
 export const profile = {
@@ -42,8 +62,9 @@ export const profile = {
     'Construyo, modernizo y opero plataformas que cuestan menos y hacen más, y llevo la IA generativa de la demo a producción.',
   summary:
     'Líder de tecnología con 15 años de experiencia construyendo, modernizando y operando plataformas de mensajería, servicios de valor agregado y sistemas de gobierno. Como responsable de toda la tecnología de una empresa de innovación, reduje entre 76% y 85% el costo mensual de sus plataformas principales, modernicé sistemas heredados de alto riesgo sin afectar la operación y llevé la IA generativa (RAG, agentes, MCP) a productos para clientes. Combino visión de negocio y desarrollo de equipos con práctica técnica diaria en Java (Quarkus, Spring), Python, React/Angular y CI/CD.',
-  heroPhoto: burbujas,
-  heroPhotoAlt: 'Macro de burbujas en un vaso con luz rosa y violeta',
+  heroPhoto: alebrije,
+  heroPhotoAlt: 'Alebrije monumental azul con lengua rosa y colmillos, de noche entre papel picado',
+  heroPhotoCredit: ['Alebrije «Kanil Nak» de Ricardo Pavel Elvira Calderón', 'Foto: Abner Sánchez'],
 };
 
 export const metrics = [
@@ -58,35 +79,59 @@ export const impact: ImpactCard[] = [
     photo: cascada,
     photoAlt: 'Cascada sobre una poza turquesa rodeada de selva',
     kicker: 'FinOps',
-    title: 'Menos <span>costo</span>',
+    metric: '−76%',
+    title: 'Menos <span>costo</span>, misma operación',
+    description: 'Rearquitectura e inventario de infraestructura en las plataformas principales.',
     reveals: [
-      '~$250k → ~$60k MXN al mes en SVA',
-      '~$100k → ~$15k MXN al mes en Gougo',
-      'Rearquitectura hacia Quarkus',
+      'SVA y Business Messaging: ~$250k → ~$60k MXN/mes',
+      'Gougo: ~$100k → ~$15k MXN/mes (−85%, IA incluida)',
+      'Depuración de servidores, dominios y servicios',
     ],
+    wide: true,
   },
   {
     photo: legoRobot,
     photoAlt: 'Robot de LEGO junto a un pequeño cactus en maceta',
     kicker: 'IA generativa',
+    metric: 'RAG',
     title: 'IA en <span>producción</span>',
-    reveals: [
-      'RAG sobre PostgreSQL para retail',
-      'Agentes en WhatsApp · A2A',
-      'LLMOps con control de costos',
-    ],
+    description: 'De reemplazar a un proveedor externo a operar modelos abiertos a bajo costo.',
+    reveals: ['Asistente RAG sobre PostgreSQL', 'MVPs multiagente en WhatsApp', 'LLMOps y costo de inferencia'],
+  },
+  {
+    photo: escritorio,
+    photoAlt: 'Escritorio de trabajo con monitor mostrando código, teclado mecánico y micrófono',
+    kicker: 'Equipos',
+    metric: '250 → 2',
+    title: 'Hacer <span>más</span> con menos',
+    description: 'Una plataforma construida por ~250 desarrolladores, operada con 2 personas.',
+    reveals: ['Formé equipos de 5 y 6 devs', 'CI/CD con GitLab y runners propios', 'IA en el ciclo de desarrollo'],
   },
   {
     photo: lago,
     photoAlt: 'Lago en calma que refleja nubes y cerros, con un muelle flotante',
     kicker: 'Modernización',
+    metric: '9 → 21',
     title: 'Legados <span>sin ruido</span>',
+    description: 'Sistemas heredados de alto riesgo modernizados sin detener la operación.',
     reveals: [
-      'GlassFish → microservicios Quarkus',
-      'Angular 9 → 21 · JS → React',
+      'GlassFish y Dropwizard → Quarkus',
+      'Angular 9 → 21 · JavaScript puro → React',
       'HBase → PostgreSQL · Kafka → RabbitMQ',
     ],
+    wide: true,
   },
+];
+
+export const gallery: GalleryPhoto[] = [
+  { photo: gatitos, alt: 'Cuatro gatitos blancos y naranjas mirando a la cámara', caption: 'Equipo de QA' },
+  { photo: cempasuchil, alt: 'Flores de cempasúchil frente a un canal con un puente rojo', caption: 'Cempasúchil', tall: true },
+  { photo: teclado, alt: 'Teclado mecánico compacto gris y menta', caption: 'Herramienta de trabajo', wide: true },
+  { photo: niebla, alt: 'Camino entre pinos cubierto de niebla', caption: 'Niebla en el bosque', tall: true },
+  { photo: playa, alt: 'Playa con oleaje y un tronco seco bajo cielo azul', caption: 'Pacífico' },
+  { photo: caracol, alt: 'Caracol blanco sobre una playa de conchas', caption: 'Detalles' },
+  { photo: burbujas, alt: 'Macro de burbujas con luz rosa y violeta', caption: 'Macro' },
+  { photo: albercaMar, alt: 'Alberca azul con vista al mar y nubes', caption: 'Horizonte', wide: true },
 ];
 
 export const experience: Job[] = [
@@ -184,13 +229,14 @@ export const skills = [
   'Sistemas de diseño (Atomic Design)',
 ];
 
-export const stack: { group: string; items: string[] }[] = [
-  { group: 'Backend', items: ['Java', 'Quarkus', 'Spring Boot', 'Dropwizard', 'Java EE', 'Python', 'FastAPI', 'Django'] },
-  { group: 'Frontend', items: ['Angular', 'React', 'Next.js', 'Tailwind'] },
-  { group: 'IA', items: ['RAG', 'MCP', 'A2A', 'Strands Agents', 'LangChain', 'CrewAI', 'Ollama', 'Claude Code'] },
-  { group: 'Datos y mensajería', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Oracle', 'Kafka', 'RabbitMQ'] },
-  { group: 'Cloud y DevSecOps', items: ['AWS', 'GCP', 'Docker', 'Kubernetes', 'GitLab CI/CD', 'Keycloak', 'Linux'] },
-  { group: 'Diseño', items: ['GIMP', 'Inkscape', 'Blender', 'Krita'] },
+/** `color` es cualquier color CSS; tiñe la tarjeta, su brillo y sus chips al hacer hover. */
+export const stack: { group: string; color: string; items: string[] }[] = [
+  { group: 'Backend', color: '#47c3ec', items: ['Java', 'Quarkus', 'Spring Boot', 'Dropwizard', 'Java EE', 'Python', 'FastAPI', 'Django'] },
+  { group: 'Frontend', color: '#ff6fae', items: ['Angular', 'React', 'Next.js', 'Tailwind'] },
+  { group: 'IA', color: '#b18cff', items: ['RAG', 'MCP', 'A2A', 'Strands Agents', 'LangChain', 'CrewAI', 'Ollama', 'Claude Code'] },
+  { group: 'Datos y mensajería', color: '#f7d046', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Oracle', 'Kafka', 'RabbitMQ'] },
+  { group: 'Cloud y DevSecOps', color: '#4ade9b', items: ['AWS', 'GCP', 'Docker', 'Kubernetes', 'GitLab CI/CD', 'Keycloak', 'Linux'] },
+  { group: 'Diseño', color: '#ff9b4a', items: ['GIMP', 'Inkscape', 'Blender', 'Krita'] },
 ];
 
 export const education = [

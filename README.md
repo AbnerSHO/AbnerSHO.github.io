@@ -20,3 +20,16 @@ npm run build    # genera dist/
 
 `.github/workflows/deploy.yml` publica en cada push a `master`.
 En GitHub: Settings → Pages → Source: **GitHub Actions**.
+
+## Pendientes
+
+- [ ] **Mascotas de temporada**: gatos con disfraz de Halloween (calabaza, fantasma, bruja) que caminan por la parte baja de la página, al estilo de las mascotas del navegador.
+  - Sprites SVG o PNG animados con CSS (`steps()` + `translateX`), sin librerías.
+  - Se activa solo en un rango de fechas (p. ej. 20 oct – 2 nov) desde un archivo `src/data/seasons.ts`, para después agregar otras temporadas: Día de Muertos (cempasúchil, xoloitzcuintle), Navidad.
+  - Botón para ocultarlas (se recuerda en `localStorage`) y desactivadas con `prefers-reduced-motion`.
+  - Que no tapen contenido: `pointer-events: none`, detrás del footer.
+  - Al pasar el mouse sobre un gato, que se detenga y maúlle con un globo de texto.
+- [ ] Versión en inglés (`/en`) desde el mismo `src/data/cv.ts`.
+- [ ] "Pregúntale a mi CV": chat con RAG sobre la experiencia (necesita backend y control de costos).
+- [ ] Imagen Open Graph (vista previa para LinkedIn/WhatsApp).
+- [ ] Probar en celular: tarjetas que se revelan al hacer scroll y la galería.
