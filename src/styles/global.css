@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-ink: #0f1115;
+  --color-ink-2: #161a21;
+  --color-ink-3: #1f2530;
+  --color-line: #2a313d;
+  --color-fg: #e8ebf0;
+  --color-muted: #9aa3b2;
+  --color-accent: #5eead4;
+  --color-accent-2: #f0abfc;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-ink text-fg font-sans antialiased;
+  }
+  ::selection {
+    @apply bg-accent text-ink;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}
+
+/*
+ * Efecto "julia" (Codrops), heredado del sitio original:
+ * al hacer hover la foto se atenúa y hace zoom lento, y las etiquetas
+ * entran deslizándose de forma escalonada. En pantallas táctiles se activa
+ * con data-active cuando la tarjeta entra en vista (ver JuliaCard.astro).
+ */
+@layer components {
+  .julia {
+    @apply relative isolate overflow-hidden rounded-2xl bg-ink-2 cursor-default;
+  }
+  .julia img {
+    @apply h-full w-full object-cover opacity-80;
+    transition:
+      opacity 1s,
+      transform 1s;
+  }
+  .julia figcaption {
+    @apply absolute inset-0 flex flex-col justify-end gap-1 p-6 text-left;
+    background: linear-gradient(to top, rgb(15 17 21 / 0.9), rgb(15 17 21 / 0.35));
+  }
+  .julia h3 {
+    @apply font-display text-3xl font-light uppercase tracking-tight text-white;
+  }
+  .julia h3 span {
+    @apply font-bold;
+  }
+  .julia .julia-reveal {
+    @apply inline-block w-fit rounded-sm bg-white px-3 py-1 text-sm font-medium text-ink opacity-0;
+    transform: translate3d(-110%, 0, 0);
+    transition:
+      opacity 0.35s,
+      transform 0.35s;
+  }
+  .julia .julia-reveal:nth-of-type(1) {
+    transition-delay: 0.15s;
+  }
+  .julia .julia-reveal:nth-of-type(2) {
+    transition-delay: 0.1s;
+  }
+  .julia .julia-reveal:nth-of-type(3) {
+    transition-delay: 0.05s;
+  }
+
+  .julia:is(:hover, :focus-within, [data-active]) img {
+    @apply opacity-40;
+    transform: scale3d(1.1, 1.1, 1);
+  }
+  .julia:is(:hover, :focus-within, [data-active]) .julia-reveal {
+    @apply opacity-100;
+    transform: translate3d(0, 0, 0);
+  }
+  .julia:is(:hover, :focus-within, [data-active]) .julia-reveal:nth-of-type(1) {
+    transition-delay: 0s;
+  }
+  .julia:is(:hover, :focus-within, [data-active]) .julia-reveal:nth-of-type(2) {
+    transition-delay: 0.05s;
+  }
+  .julia:is(:hover, :focus-within, [data-active]) .julia-reveal:nth-of-type(3) {
+    transition-delay: 0.1s;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-line bg-ink-2 px-3 py-1 font-mono text-xs text-muted transition-colors;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .julia img,
+  .julia .julia-reveal {
+    transition: opacity 0.2s !important;
+    transform: none !important;
+  }
+}

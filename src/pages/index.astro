@@ -1,0 +1,276 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import JuliaCard from '../components/JuliaCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import {
+  profile,
+  metrics,
+  impact,
+  experience,
+  skills,
+  stack,
+  education,
+  languages,
+  interests,
+} from '../data/cv';
+
+const nav = [
+  { href: '#impacto', label: 'Impacto' },
+  { href: '#experiencia', label: 'Experiencia' },
+  { href: '#stack', label: 'Stack' },
+  { href: '#contacto', label: 'Contacto' },
+];
+---
+
+<Base>
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-line/60 bg-ink/75 backdrop-blur">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6" aria-label="Principal">
+      <a href="#" class="font-display text-lg font-bold tracking-tight">
+        AS<span class="text-accent">.</span>
+      </a>
+      <ul class="hidden gap-8 text-sm text-muted md:flex">
+        {nav.map((item) => <li><a class="transition-colors hover:text-fg" href={item.href}>{item.label}</a></li>)}
+      </ul>
+      <a
+        href="/cv"
+        class="rounded-full border border-line px-4 py-1.5 text-sm transition-colors hover:border-accent hover:text-accent"
+      >
+        CV imprimible
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-28 pb-20 sm:px-6 md:grid-cols-[1.4fr_1fr] md:pt-36">
+      <div>
+        <p class="font-mono text-sm text-accent">{profile.location}</p>
+        <h1 class="mt-4 font-display text-4xl leading-[1.05] font-bold tracking-tight sm:text-6xl">
+          {profile.shortName}
+        </h1>
+        <p class="mt-4 font-display text-xl text-muted sm:text-2xl">{profile.headline}</p>
+        <p class="mt-8 max-w-xl text-lg leading-relaxed text-fg/90">{profile.tagline}</p>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a
+            href="#contacto"
+            class="rounded-full bg-accent px-6 py-3 font-medium text-ink transition-transform hover:-translate-y-0.5"
+          >
+            Hablemos
+          </a>
+          <a
+            href="#experiencia"
+            class="rounded-full border border-line px-6 py-3 font-medium transition-colors hover:border-fg"
+          >
+            Ver trayectoria
+          </a>
+        </div>
+      </div>
+
+      <figure class="julia aspect-[3/4] max-h-[560px] justify-self-center md:justify-self-end" tabindex="0" data-julia>
+        <Image
+          src={profile.heroPhoto}
+          alt={profile.heroPhotoAlt}
+          widths={[400, 662]}
+          sizes="(min-width: 768px) 40vw, 90vw"
+          loading="eager"
+        />
+        <figcaption>
+          <p class="julia-reveal">Foto: Abner Sánchez</p>
+          <p class="julia-reveal">Macro · luz y agua</p>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- Métricas -->
+    <section aria-label="Resultados clave" class="border-y border-line bg-ink-2">
+      <dl class="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-line lg:grid-cols-4">
+        {
+          metrics.map((m) => (
+            <div class="group flex flex-col-reverse bg-ink-2 px-6 py-8 transition-colors hover:bg-ink-3">
+              <dt class="mt-2 text-sm text-muted">{m.label}</dt>
+              <dd class="font-display text-4xl font-bold tracking-tight transition-colors group-hover:text-accent sm:text-5xl">
+                {m.value}
+                {m.unit && <span class="ml-1 text-lg font-medium text-muted">{m.unit}</span>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <!-- Impacto -->
+    <section id="impacto" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <SectionHeading index="01" title="Impacto" />
+      <p class="-mt-4 mb-10 max-w-2xl text-muted">{profile.summary}</p>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {impact.map((card) => <JuliaCard card={card} />)}
+      </div>
+    </section>
+
+    <!-- Experiencia -->
+    <section id="experiencia" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <SectionHeading index="02" title="Experiencia" />
+      <ol class="space-y-6">
+        {
+          experience.map((job) => (
+            <li class="group relative rounded-2xl border border-line bg-ink-2 p-6 transition-colors hover:border-accent/50 sm:p-8">
+              <span
+                class="absolute top-8 bottom-8 left-0 w-0.5 origin-top scale-y-0 bg-accent transition-transform duration-500 group-hover:scale-y-100"
+                aria-hidden="true"
+              />
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 class="font-display text-2xl font-medium">{job.company}</h3>
+                <span class="font-mono text-sm text-muted">{job.period}</span>
+              </div>
+              {job.description && <p class="mt-1 text-sm text-muted">{job.description}</p>}
+
+              <div class="mt-6 space-y-8">
+                {job.roles.map((role) => (
+                  <div>
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                      <h4 class="font-semibold text-fg">{role.title}</h4>
+                      {job.roles.length > 1 && <span class="font-mono text-xs text-muted">{role.period}</span>}
+                    </div>
+                    {role.scope && <p class="mt-2 text-muted">{role.scope}</p>}
+                    {role.highlights.length > 0 && (
+                      <ul class="mt-4 space-y-2 text-fg/85">
+                        {role.highlights.slice(0, 2).map((h) => (
+                          <li class="relative pl-5 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:bg-accent">
+                            {h}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {role.highlights.length > 2 && (
+                      <details class="group/d mt-2">
+                        <summary class="cursor-pointer list-none font-mono text-xs text-accent hover:underline">
+                          <span class="group-open/d:hidden">+ {role.highlights.length - 2} logros más</span>
+                          <span class="hidden group-open/d:inline">− mostrar menos</span>
+                        </summary>
+                        <ul class="mt-2 space-y-2 text-fg/85">
+                          {role.highlights.slice(2).map((h) => (
+                            <li class="relative pl-5 before:absolute before:top-2.5 before:left-0 before:size-1.5 before:rounded-full before:bg-accent">
+                              {h}
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {job.stack && (
+                <ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías">
+                  {job.stack.map((tech) => (
+                    <li class="chip group-hover:border-accent/40 group-hover:text-fg">{tech}</li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- Stack y habilidades -->
+    <section id="stack" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <SectionHeading index="03" title="Stack y habilidades" />
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          stack.map((g) => (
+            <div class="group rounded-2xl border border-line bg-ink-2 p-6 transition-all hover:-translate-y-1 hover:border-accent/50">
+              <h3 class="font-mono text-xs tracking-widest text-muted uppercase transition-colors group-hover:text-accent">
+                {g.group}
+              </h3>
+              <ul class="mt-4 flex flex-wrap gap-2">
+                {g.items.map((item) => (
+                  <li class="chip group-hover:text-fg">{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-muted">
+        {skills.map((s) => <li class="transition-colors hover:text-fg">— {s}</li>)}
+      </ul>
+    </section>
+
+    <!-- Formación, idiomas, intereses -->
+    <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <SectionHeading index="04" title="Formación y más" />
+      <div class="grid gap-10 md:grid-cols-3">
+        <div>
+          <h3 class="font-mono text-xs tracking-widest text-muted uppercase">Formación</h3>
+          <ul class="mt-4 space-y-4">
+            {
+              education.map((e) => (
+                <li>
+                  <p class="font-medium">{e.degree}</p>
+                  <p class="text-sm text-muted">
+                    {e.school} · {e.period}
+                  </p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-mono text-xs tracking-widest text-muted uppercase">Idiomas</h3>
+          <ul class="mt-4 space-y-4">
+            {
+              languages.map((l) => (
+                <li>
+                  <p class="font-medium">{l.name}</p>
+                  <p class="text-sm text-muted">{l.level}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-mono text-xs tracking-widest text-muted uppercase">Fuera del código</h3>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {interests.map((i) => <li class="chip hover:border-accent-2/60 hover:text-accent-2">{i}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto" class="border-t border-line bg-ink-2">
+      <div class="mx-auto max-w-6xl px-4 py-24 text-center sm:px-6">
+        <p class="font-mono text-sm text-accent">05 · Contacto</p>
+        <h2 class="mx-auto mt-4 max-w-2xl font-display text-3xl font-medium tracking-tight sm:text-5xl">
+          ¿Tienes una plataforma que modernizar o un equipo que hacer crecer?
+        </h2>
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          <a
+            href={`mailto:${profile.email}`}
+            class="rounded-full bg-accent px-6 py-3 font-medium text-ink transition-transform hover:-translate-y-0.5"
+          >
+            {profile.email}
+          </a>
+          <a
+            href={profile.linkedin}
+            class="rounded-full border border-line px-6 py-3 font-medium transition-colors hover:border-fg"
+            rel="me noopener"
+            target="_blank">LinkedIn</a
+          >
+          <a
+            href={profile.github}
+            class="rounded-full border border-line px-6 py-3 font-medium transition-colors hover:border-fg"
+            rel="me noopener"
+            target="_blank">GitHub</a
+          >
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-line px-4 py-8 text-center text-sm text-muted">
+    © {new Date().getFullYear()} {profile.name} · Fotos propias · Hecho con Astro y Tailwind
+  </footer>
+</Base>

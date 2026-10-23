@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import type { ImpactCard } from '../data/cv';
+
+interface Props {
+  card: ImpactCard;
+}
+
+const { card } = Astro.props;
+---
+
+<figure class="julia aspect-[4/3]" tabindex="0" data-julia>
+  <Image
+    src={card.photo}
+    alt={card.photoAlt}
+    widths={[480, 800, 1200]}
+    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+    loading="lazy"
+  />
+  <figcaption>
+    <p class="font-mono text-xs uppercase tracking-widest text-accent">{card.kicker}</p>
+    <h3 set:html={card.title} />
+    <div class="mt-3 flex flex-col gap-1.5">
+      {card.reveals.map((text) => <p class="julia-reveal">{text}</p>)}
+    </div>
+  </figcaption>
+</figure>
+
+<script>
+  // En dispositivos sin hover, revelar el contenido cuando la tarjeta entra en vista.
+  if (window.matchMedia('(hover: none)').matches) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          entry.target.toggleAttribute('data-active', entry.isIntersecting);
+        }
+      },
+      { threshold: 0.6 },
+    );
+    document.querySelectorAll('[data-julia]').forEach((el) => observer.observe(el));
+  }
+</script>

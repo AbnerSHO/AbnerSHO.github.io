@@ -1,0 +1,115 @@
+---
+// Versión imprimible y amigable con ATS: una columna, texto plano, sin fotos.
+import Base from '../layouts/Base.astro';
+import { profile, experience, skills, stack, education, languages, interests } from '../data/cv';
+
+const linkedinLabel = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '');
+const websiteLabel = profile.website.replace(/^https?:\/\//, '');
+---
+
+<Base title={`CV — ${profile.name}`} bodyClass="bg-white! text-neutral-900! print:text-[10.5pt]">
+  <div class="mx-auto max-w-3xl px-4 py-10 sm:px-8 print:max-w-none print:p-0">
+    <nav class="mb-8 flex items-center justify-between text-sm print:hidden">
+      <a href="/" class="text-neutral-500 hover:text-neutral-900">← Volver al sitio</a>
+      <button
+        type="button"
+        onclick="window.print()"
+        class="rounded-full bg-neutral-900 px-4 py-1.5 text-white hover:bg-neutral-700"
+      >
+        Imprimir / Guardar PDF
+      </button>
+    </nav>
+
+    <header>
+      <h1 class="text-3xl font-bold">{profile.name}</h1>
+      <p class="mt-1 text-lg">{profile.headline}</p>
+      <p class="mt-2 text-sm text-neutral-600">
+        {profile.location} | {profile.email} | {linkedinLabel} | {websiteLabel}
+      </p>
+    </header>
+
+    <section class="mt-6">
+      <h2 class="cv-h2">Perfil profesional</h2>
+      <p>{profile.summary}</p>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="cv-h2">Experiencia profesional</h2>
+      {
+        experience.map((job) => (
+          <article class="mt-4 break-inside-avoid-page">
+            <h3 class="font-bold">
+              {job.company}
+              {job.description && <span class="font-normal"> — {job.description}</span>}
+              <span class="font-normal"> | {job.period}</span>
+            </h3>
+            {job.roles.map((role) => (
+              <div class="mt-2">
+                <h4 class="font-semibold">
+                  {role.title} <span class="font-normal">| {role.period}</span>
+                </h4>
+                {role.scope && <p class="mt-1">{role.scope}</p>}
+                {role.highlights.length > 0 && (
+                  <ul class="mt-1 list-disc space-y-1 pl-5">
+                    {role.highlights.map((h) => (
+                      <li>{h}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="mt-6">
+      <h2 class="cv-h2">Formación académica</h2>
+      <ul>
+        {education.map((e) => <li>{e.degree} — {e.school} | {e.period}</li>)}
+      </ul>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="cv-h2">Habilidades</h2>
+      <p>{skills.join(' · ')}</p>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="cv-h2">Software y tecnologías</h2>
+      <ul>
+        {
+          stack.map((g) => (
+            <li>
+              <strong>{g.group}:</strong> {g.items.join(', ')}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="cv-h2">Idiomas</h2>
+      <ul>
+        {languages.map((l) => <li>{l.name}: {l.level}</li>)}
+      </ul>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="cv-h2">Intereses</h2>
+      <p>{interests.join(', ')}.</p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  @reference '../styles/global.css';
+
+  .cv-h2 {
+    @apply mb-2 border-b border-neutral-300 pb-1 text-sm font-bold tracking-wider uppercase;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+</style>
