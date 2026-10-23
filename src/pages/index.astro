@@ -47,8 +47,9 @@ const bullet =
   </header>
 
   <main>
-    <!-- Hero -->
-    <section class="relative overflow-hidden">
+    <!-- Hero + métricas: juntos llenan la primera pantalla -->
+    <div class="flex min-h-svh flex-col">
+    <section class="relative flex flex-1 items-center overflow-hidden">
       <div
         class="pointer-events-none absolute -top-40 -left-40 size-[36rem] rounded-full bg-accent/15 blur-3xl"
         aria-hidden="true"
@@ -59,15 +60,15 @@ const bullet =
         aria-hidden="true"
       >
       </div>
-      <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pt-28 pb-20 sm:px-6 md:grid-cols-[1.3fr_1fr] md:pt-36">
+      <div class="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-4 pt-24 pb-14 sm:px-6 md:grid-cols-[1.4fr_1fr] md:pt-28">
         <div>
           <p class="font-mono text-sm text-accent">{profile.location}</p>
-          <h1 class="mt-4 font-display text-5xl leading-[1.02] font-extrabold tracking-tight sm:text-7xl">
+          <h1 class="mt-3 font-display text-4xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl">
             {profile.shortName}
           </h1>
-          <p class="mt-5 font-display text-xl font-medium text-accent sm:text-2xl">{profile.headline}</p>
-          <p class="mt-8 max-w-xl text-xl leading-relaxed text-fg/90">{profile.tagline}</p>
-          <div class="mt-10 flex flex-wrap gap-3">
+          <p class="mt-4 font-display text-lg font-medium text-accent sm:text-xl">{profile.headline}</p>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-fg/90">{profile.tagline}</p>
+          <div class="mt-8 flex flex-wrap gap-3">
             <a
               href="#contacto"
               class="rounded-full bg-accent px-7 py-3 font-semibold text-ink shadow-[0_10px_30px_-10px] shadow-accent transition-transform hover:-translate-y-0.5"
@@ -84,7 +85,7 @@ const bullet =
         </div>
 
         <figure
-          class="julia julia-vivid aspect-[3/4] w-full max-w-sm justify-self-center md:justify-self-end"
+          class="julia julia-vivid aspect-[3/4] w-full max-w-[18rem] justify-self-center md:justify-self-end"
           tabindex="0"
           data-julia
         >
@@ -92,7 +93,7 @@ const bullet =
             src={profile.heroPhoto}
             alt={profile.heroPhotoAlt}
             widths={[480, 800, 1200]}
-            sizes="(min-width: 768px) 384px, 90vw"
+            sizes="(min-width: 768px) 288px, 90vw"
             loading="eager"
           />
           <figcaption>
@@ -107,9 +108,9 @@ const bullet =
       <dl class="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-line lg:grid-cols-4">
         {
           metrics.map((m) => (
-            <div class="group flex flex-col-reverse bg-ink-2 px-6 py-8 transition-colors hover:bg-ink-3">
-              <dt class="mt-2 text-muted">{m.label}</dt>
-              <dd class="font-display text-5xl font-extrabold tracking-tight transition-colors group-hover:text-accent">
+            <div class="group flex flex-col-reverse bg-ink-2 px-6 py-6 transition-colors hover:bg-ink-3">
+              <dt class="mt-1 text-sm text-muted">{m.label}</dt>
+              <dd class="font-display text-4xl font-extrabold tracking-tight transition-colors group-hover:text-accent">
                 {m.value}
                 {m.unit && <span class="ml-1 text-xl font-semibold text-muted">{m.unit}</span>}
               </dd>
@@ -118,18 +119,19 @@ const bullet =
         }
       </dl>
     </section>
+    </div>
 
     <!-- Impacto -->
-    <section id="impacto" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <section id="impacto" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <SectionHeading index="01" title="Impacto" />
-      <p class="-mt-4 mb-12 max-w-3xl text-lg text-muted">{profile.summary}</p>
-      <div class="grid gap-6 lg:grid-cols-3">
+      <p class="-mt-3 mb-8 max-w-3xl text-muted">{profile.summary}</p>
+      <div class="grid gap-5 lg:grid-cols-3">
         {impact.map((card) => <JuliaCard card={card} />)}
       </div>
     </section>
 
     <!-- Experiencia -->
-    <section id="experiencia" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <section id="experiencia" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <SectionHeading index="02" title="Experiencia" />
       <ol class="space-y-6">
         {
@@ -191,7 +193,7 @@ const bullet =
     </section>
 
     <!-- Stack y habilidades -->
-    <section id="stack" class="relative overflow-hidden py-24">
+    <section id="stack" class="relative overflow-hidden py-20">
       <div
         class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,--theme(--color-accent/12%),transparent_60%)]"
         aria-hidden="true"
@@ -228,7 +230,7 @@ const bullet =
     </section>
 
     <!-- Formación, idiomas, intereses -->
-    <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <SectionHeading index="04" title="Formación y más" />
       <div class="grid gap-10 md:grid-cols-3">
         <div>
@@ -267,7 +269,7 @@ const bullet =
         </div>
       </div>
 
-      <div class="mt-14 grid grid-flow-dense auto-rows-[11rem] grid-cols-2 gap-4 sm:auto-rows-[13rem] md:grid-cols-4">
+      <div class="mt-10 grid grid-flow-dense auto-rows-[8rem] grid-cols-2 gap-3 sm:auto-rows-[9rem] md:grid-cols-4 lg:auto-rows-[min(9.5rem,calc((100svh-17rem)/3))]">
         {
           gallery.map((g) => (
             <figure

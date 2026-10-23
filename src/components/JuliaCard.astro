@@ -10,7 +10,7 @@ const { card } = Astro.props;
 ---
 
 <figure
-  class:list={['julia min-h-[26rem] sm:min-h-[28rem]', card.wide && 'lg:col-span-2']}
+  class:list={['julia min-h-[20rem] sm:min-h-[22rem]', card.wide && 'lg:col-span-2']}
   tabindex="0"
   data-julia
 >
@@ -29,14 +29,14 @@ const { card } = Astro.props;
       <p
         class:list={[
           'font-display font-extrabold tracking-tight whitespace-nowrap text-white drop-shadow-lg',
-          card.wide ? 'text-5xl sm:text-6xl' : 'text-5xl',
+          card.wide ? 'text-4xl sm:text-5xl' : 'text-4xl',
         ]}
       >
         {card.metric}
       </p>
     </div>
     <h3 set:html={card.title} />
-    <p class="max-w-md text-base text-fg/85">{card.description}</p>
+    <p class="max-w-md text-sm text-fg/85 sm:text-base">{card.description}</p>
     <div class="mt-2 flex flex-col gap-1.5">
       {card.reveals.map((text) => <p class="julia-reveal">{text}</p>)}
     </div>
