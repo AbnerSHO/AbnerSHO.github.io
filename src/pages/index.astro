@@ -269,8 +269,29 @@ const bullet =
       <div class="mt-14 grid grid-flow-dense auto-rows-[11rem] grid-cols-2 gap-4 sm:auto-rows-[13rem] md:grid-cols-4">
         {
           gallery.map((g) => (
-            <figure class:list={['shot', g.tall && 'row-span-2', g.wide && 'col-span-2']} tabindex="0" data-julia>
-              <Image src={g.photo} alt={g.alt} widths={[400, 700, 1200]} sizes={g.wide ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'} loading="lazy" />
+            <figure
+              class:list={['shot', g.tall && 'row-span-2', g.wide && 'col-span-2', g.soft && 'shot-soft']}
+              style={g.splash && `--tone: ${g.splash.tone}`}
+              tabindex="0"
+              data-julia
+            >
+              <Image
+                src={g.photo}
+                alt={g.alt}
+                widths={[400, 700, 1200]}
+                sizes={g.wide ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+                loading="lazy"
+              />
+              {g.splash && (
+                <Image
+                  class="shot-splash"
+                  src={g.splash.photo}
+                  alt=""
+                  widths={[400, 700, 1200]}
+                  sizes={g.wide ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+                  loading="lazy"
+                />
+              )}
               <figcaption>{g.caption}</figcaption>
             </figure>
           ))
@@ -280,7 +301,9 @@ const bullet =
 
     <!-- Contacto -->
     <section id="contacto" class="border-t border-line bg-ink-2">
-      <div class="mx-auto flex max-w-6xl flex-wrap justify-center gap-4 px-4 py-16 sm:px-6">
+      <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <SectionHeading index="05" title="Contacto" />
+        <div class="flex flex-wrap justify-center gap-4">
         <a
           href={`mailto:${profile.email}`}
           class="rounded-full bg-accent px-7 py-3 font-semibold text-ink transition-transform hover:-translate-y-0.5"
@@ -299,6 +322,7 @@ const bullet =
           rel="me noopener"
           target="_blank">GitHub</a
         >
+        </div>
       </div>
     </section>
   </main>

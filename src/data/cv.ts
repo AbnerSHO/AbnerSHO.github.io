@@ -13,6 +13,12 @@ import niebla from '../assets/photos/niebla.jpg';
 import caracol from '../assets/photos/caracol.jpg';
 import burbujas from '../assets/photos/burbujas.jpg';
 import albercaMar from '../assets/photos/alberca-mar.jpg';
+// Versiones para el hover (generadas con scripts/color-splash.py)
+import cempasuchilSplash from '../assets/photos/splash/cempasuchil.jpg';
+import tecladoSplash from '../assets/photos/splash/teclado.jpg';
+import gatitosSplash from '../assets/photos/splash/gatitos.jpg';
+import playaSplash from '../assets/photos/splash/playa.jpg';
+import burbujasSplash from '../assets/photos/splash/burbujas.jpg';
 
 export interface Role {
   title: string;
@@ -47,6 +53,10 @@ export interface GalleryPhoto {
   caption: string;
   tall?: boolean;
   wide?: boolean;
+  /** Se muestra deslavada (casi blanca) y al hacer hover aparece tal cual, sin zoom. */
+  soft?: boolean;
+  /** Versión alterna que aparece al hacer hover (scripts/color-splash.py). */
+  splash?: { photo: ImageMetadata; tone: string };
 }
 
 export const profile = {
@@ -124,13 +134,13 @@ export const impact: ImpactCard[] = [
 ];
 
 export const gallery: GalleryPhoto[] = [
-  { photo: gatitos, alt: 'Cuatro gatitos blancos y naranjas mirando a la cámara', caption: 'Equipo de QA' },
-  { photo: cempasuchil, alt: 'Flores de cempasúchil frente a un canal con un puente rojo', caption: 'Cempasúchil', tall: true },
-  { photo: teclado, alt: 'Teclado mecánico compacto gris y menta', caption: 'Herramienta de trabajo', wide: true },
+  { photo: gatitos, alt: 'Cuatro gatitos blancos y naranjas mirando a la cámara', caption: 'Equipo de QA', splash: { photo: gatitosSplash, tone: '#ff9b4a' } },
+  { photo: cempasuchil, alt: 'Flores de cempasúchil frente a un canal con un puente rojo', caption: 'Cempasúchil', tall: true, splash: { photo: cempasuchilSplash, tone: '#f7b733' } },
+  { photo: teclado, alt: 'Teclado mecánico compacto gris y menta', caption: 'Herramienta de trabajo', wide: true, splash: { photo: tecladoSplash, tone: '#5fd3b0' } },
   { photo: niebla, alt: 'Camino entre pinos cubierto de niebla', caption: 'Niebla en el bosque', tall: true },
-  { photo: playa, alt: 'Playa con oleaje y un tronco seco bajo cielo azul', caption: 'Pacífico' },
-  { photo: caracol, alt: 'Caracol blanco sobre una playa de conchas', caption: 'Detalles' },
-  { photo: burbujas, alt: 'Macro de burbujas con luz rosa y violeta', caption: 'Macro' },
+  { photo: playa, alt: 'Playa con oleaje y un tronco seco bajo cielo azul', caption: 'Pacífico', splash: { photo: playaSplash, tone: '#47a6ec' } },
+  { photo: caracol, alt: 'Caracol blanco sobre una playa de conchas', caption: 'Detalles', soft: true },
+  { photo: burbujas, alt: 'Macro de burbujas con luz rosa y violeta', caption: 'Macro', splash: { photo: burbujasSplash, tone: '#c56cf0' } },
   { photo: albercaMar, alt: 'Alberca azul con vista al mar y nubes', caption: 'Horizonte', wide: true },
 ];
 
