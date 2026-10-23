@@ -75,10 +75,18 @@ const snow = Array.from({ length: 18 }, (_, i) => ({
 
       <button
         type="button"
-        class="pointer-events-auto absolute top-2 right-3 rounded-full border border-white/15 bg-ink/60 px-3 py-1 text-sm text-muted backdrop-blur transition-colors hover:text-fg"
+        class="pointer-events-auto absolute top-2 right-2 grid size-8 place-items-center rounded-full border border-white/15 bg-ink/60 text-sm text-muted backdrop-blur transition-colors hover:text-fg sm:right-3 sm:flex sm:size-auto sm:px-3 sm:py-1"
+        aria-label="Ocultar gatos"
+        title="Ocultar gatos"
         data-season-hide
       >
-        Ocultar gatos
+        <!-- En móvil solo el ícono de ojo tachado; en pantallas grandes, el texto -->
+        <svg class="size-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.7 5.1A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-2.2 3.1M6.6 6.6C3.7 8.5 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6" />
+          <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+          <path d="M2 2l20 20" />
+        </svg>
+        <span class="hidden sm:inline">Ocultar gatos</span>
       </button>
     </section>
   ))
