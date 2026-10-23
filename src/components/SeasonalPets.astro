@@ -1,31 +1,68 @@
 ---
-// Franja al final de la página donde caminan mascotas de temporada.
-// Se genera oculta y el script la muestra solo si la fecha local cae en la
-// temporada (o con ?temporada=<id>), y si quien visita no la ocultó.
+// Franja fija al pie de la pantalla (sticky) donde caminan mascotas de temporada.
+// Se genera oculta y el script la muestra solo si la fecha local cae en alguna
+// temporada (o con ?temporada=<id>), y si quien visita no la ocultó este año.
 import CatSprite from './CatSprite.astro';
 import { seasons } from '../data/seasons';
+
+const theme = {
+  halloween: { emoji: '🎃', bg: 'bg-[#1b1436]/60', ground: 'bg-[#2a1a4f]/80' },
+  navidad: { emoji: '🎄', bg: 'bg-[#0d2240]/60', ground: 'bg-white/80' },
+};
+
+// Copos de nieve: posición, duración y retraso fijos para que el HTML sea estable.
+const snow = Array.from({ length: 18 }, (_, i) => ({
+  left: (i * 37) % 100,
+  duration: 5 + ((i * 7) % 5),
+  delay: -((i * 13) % 9),
+  size: 0.6 + ((i * 3) % 4) * 0.15,
+}));
 ---
 
 {
   seasons.map((season) => (
     <section
-      class="season-strip relative h-44 overflow-hidden border-t border-line bg-gradient-to-b from-[#1b1436] to-[#3a2466]"
+      class:list={[
+        'season-strip pointer-events-none sticky bottom-0 z-40 h-24 border-t border-white/10 backdrop-blur-[3px] sm:h-28',
+        theme[season.id].bg,
+      ]}
       aria-label={`Decoración de ${season.label}`}
       data-season={season.id}
       data-from={season.from}
       data-to={season.to}
+      data-emoji={theme[season.id].emoji}
       hidden
     >
-      <div class="absolute top-4 left-[12%] size-10 rounded-full bg-[#f7e7b4] shadow-[0_0_40px_10px] shadow-[#f7e7b4]/25" aria-hidden="true" />
-      <span class="absolute top-6 left-[30%] animate-pulse text-xl" aria-hidden="true">🦇</span>
-      <span class="absolute top-10 right-[22%] animate-pulse text-lg [animation-delay:1s]" aria-hidden="true">🦇</span>
-      <span class="absolute bottom-3 left-[6%] text-2xl" aria-hidden="true">🎃</span>
-      <span class="absolute right-[8%] bottom-3 text-3xl" aria-hidden="true">🎃</span>
-      <div class="absolute inset-x-0 bottom-0 h-3 bg-[#22163f]" aria-hidden="true" />
+      {season.id === 'halloween' && (
+        <div aria-hidden="true">
+          <div class="absolute top-3 left-[12%] size-8 rounded-full bg-[#f7e7b4] shadow-[0_0_40px_10px] shadow-[#f7e7b4]/25" />
+          <span class="absolute top-4 left-[30%] animate-pulse text-lg">🦇</span>
+          <span class="absolute top-7 right-[22%] animate-pulse text-base [animation-delay:1s]">🦇</span>
+          <span class="absolute bottom-2 left-[6%] text-2xl">🎃</span>
+          <span class="absolute right-[8%] bottom-2 text-2xl">🎃</span>
+        </div>
+      )}
+      {season.id === 'navidad' && (
+        <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+          {snow.map((f) => (
+            <span
+              class="snowflake"
+              style={`left: ${f.left}%; font-size: ${f.size}rem; animation-duration: ${f.duration}s; animation-delay: ${f.delay}s`}
+            >
+              ❄
+            </span>
+          ))}
+          <span class="absolute top-3 left-[12%] animate-pulse text-xl">⭐</span>
+          <span class="absolute bottom-2 left-[5%] text-3xl">🎄</span>
+          <span class="absolute right-[8%] bottom-2 text-2xl">🎁</span>
+          <span class="absolute right-[12%] bottom-2 text-xl">🎁</span>
+        </div>
+      )}
+      <div class:list={['absolute inset-x-0 bottom-0 h-2', theme[season.id].ground]} aria-hidden="true" />
 
       {season.pets.map((pet, i) => (
         <div
-          class="pet"
+          class="pet pointer-events-auto"
           style={`--d: ${pet.duration}s; --delay: ${pet.delay}s; --rest: ${18 + i * 30}%`}
           tabindex="0"
           role="img"
@@ -38,7 +75,7 @@ import { seasons } from '../data/seasons';
 
       <button
         type="button"
-        class="absolute top-3 right-3 rounded-full border border-line bg-ink/70 px-3 py-1 text-sm text-muted backdrop-blur transition-colors hover:text-fg"
+        class="pointer-events-auto absolute top-2 right-3 rounded-full border border-white/15 bg-ink/60 px-3 py-1 text-sm text-muted backdrop-blur transition-colors hover:text-fg"
         data-season-hide
       >
         Ocultar gatos
@@ -53,13 +90,25 @@ import { seasons } from '../data/seasons';
   data-season-show
   hidden
 >
-  🎃 Ver los gatos de temporada
+  Ver los gatos de temporada
 </button>
 
 <style>
+  .season-strip {
+    /* Recorta a los lados (los gatos entran y salen) pero deja ver el globo arriba. */
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+  .snowflake {
+    position: absolute;
+    top: -1rem;
+    color: white;
+    opacity: 0.8;
+    animation: fall linear infinite;
+  }
   .pet {
     position: absolute;
-    bottom: 10px;
+    bottom: 6px;
     left: 0;
     animation: walk var(--d) linear var(--delay) infinite;
     cursor: pointer;
@@ -67,6 +116,8 @@ import { seasons } from '../data/seasons';
   .pet :global(svg) {
     display: block;
     overflow: visible;
+    width: 84px;
+    height: 63px;
     animation: bob 0.45s ease-in-out infinite alternate;
     filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.45));
   }
@@ -123,6 +174,18 @@ import { seasons } from '../data/seasons';
       transform: translateX(calc(100vw + 20px));
     }
   }
+  @media (min-width: 640px) {
+    .pet :global(svg) {
+      width: 108px;
+      height: 81px;
+    }
+  }
+
+  @keyframes fall {
+    to {
+      transform: translate(12px, 8rem) rotate(180deg);
+    }
+  }
   @keyframes bob {
     to {
       transform: translateY(-3px);
@@ -147,6 +210,7 @@ import { seasons } from '../data/seasons';
 
   @media (prefers-reduced-motion: reduce) {
     .pet,
+    .snowflake,
     .pet :global(svg),
     .pet :global(.leg),
     .pet :global(.tail) {
@@ -189,8 +253,12 @@ import { seasons } from '../data/seasons';
   );
 
   if (strip) {
-    // Se recuerda por temporada y año: el próximo Halloween vuelven a salir.
-    const id = `${strip.dataset.season}-${now.getFullYear()}`;
+    // Se recuerda por temporada y año: la próxima vez que llegue la temporada vuelven a salir.
+    // En temporadas que cruzan el año (Navidad), enero cuenta como la del año anterior.
+    const { from, to } = strip.dataset as { from: string; to: string };
+    const year = from > to && today <= to ? now.getFullYear() - 1 : now.getFullYear();
+    const id = `${strip.dataset.season}-${year}`;
+    if (showButton) showButton.textContent = `${strip.dataset.emoji} Ver los gatos de temporada`;
     const render = () => {
       const hidden = read() === id;
       strip.hidden = hidden;
