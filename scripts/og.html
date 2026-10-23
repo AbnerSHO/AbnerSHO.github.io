@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+  Plantilla de la imagen Open Graph (public/og.jpg, 1200×630).
+  Para regenerarla (Edge o Chrome en modo headless), desde la raíz del repo:
+    msedge --headless --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 \
+      --virtual-time-budget=5000 --screenshot=og.png scripts/og.html
+    y luego convertirla a JPG (WhatsApp no muestra vistas previas de más de ~300 KB):
+      python -c "from PIL import Image; Image.open('og.png').convert('RGB').save('public/og.jpg', quality=86, optimize=True)"
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@400..700&family=JetBrains+Mono:wght@400;500&display=block"
+    />
+    <style>
+      * { box-sizing: border-box; margin: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; background: #0b1118; color: #e8eef5; }
+      body { position: relative; font-family: Figtree, sans-serif; }
+      .glow { position: absolute; border-radius: 50%; filter: blur(90px); }
+      .glow.a { width: 520px; height: 520px; left: -160px; top: -200px; background: #47c3ec; opacity: 0.22; }
+      .glow.b { width: 420px; height: 420px; right: 120px; bottom: -220px; background: #ff6fae; opacity: 0.18; }
+      .text { position: absolute; left: 80px; top: 72px; width: 640px; }
+      .logo { font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 30px; letter-spacing: -0.02em; }
+      .logo span { color: #47c3ec; }
+      h1 { margin-top: 64px; font-family: 'Bricolage Grotesque'; font-weight: 700; font-size: 88px; line-height: 0.95; letter-spacing: -0.035em; }
+      .headline { margin-top: 22px; font-size: 30px; font-weight: 600; color: #47c3ec; }
+      .tagline { margin-top: 18px; font-size: 24px; line-height: 1.35; color: #b4c1cf; }
+      .metrics { position: absolute; left: 80px; bottom: 64px; display: flex; gap: 40px; font-family: 'Bricolage Grotesque'; }
+      .metrics b { display: block; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; }
+      .metrics small { font-family: 'JetBrains Mono'; font-size: 15px; color: #b4c1cf; }
+      .photo { position: absolute; right: 64px; top: 56px; width: 360px; height: 518px; border-radius: 28px; overflow: hidden;
+        box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12), 0 30px 80px -20px rgb(71 195 236 / 0.45); }
+      .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; filter: saturate(1.15) brightness(1.08); }
+      .url { position: absolute; right: 64px; bottom: 22px; width: 360px; text-align: center; font-family: 'JetBrains Mono'; font-size: 16px; color: #b4c1cf; }
+    </style>
+  </head>
+  <body>
+    <div class="glow a"></div>
+    <div class="glow b"></div>
+
+    <div class="text">
+      <div class="logo">SHAO<span>.</span></div>
+      <h1>Abner Sánchez</h1>
+      <p class="headline">Engineering Manager · CTO · Java Full‑Stack</p>
+      <p class="tagline">Plataformas que cuestan menos y hacen más, e IA generativa de la demo a producción.</p>
+    </div>
+
+    <div class="metrics">
+      <div><b>15</b><small>años</small></div>
+      <div><b>−76%</b><small>costo mensual</small></div>
+      <div><b>−85%</b><small>con IA incluida</small></div>
+      <div><b>5</b><small>países</small></div>
+    </div>
+
+    <div class="photo"><img src="../src/assets/photos/alebrije.jpg" alt="" /></div>
+    <div class="url">abnersho.github.io</div>
+  </body>
+</html>
