@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import JuliaCard from '../components/JuliaCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
+import SeasonalPets from '../components/SeasonalPets.astro';
 import {
   profile,
   metrics,
@@ -326,6 +327,8 @@ const bullet =
       </div>
     </section>
   </main>
+
+  <SeasonalPets />
 
   <footer class="border-t border-line px-4 py-8 text-center text-muted">
     © {new Date().getFullYear()} {profile.name} · Fotos propias · Hecho con Astro y Tailwind

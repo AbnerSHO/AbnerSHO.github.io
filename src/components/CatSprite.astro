@@ -1,0 +1,80 @@
+---
+// Gatos disfrazados, vistos de lado y mirando a la derecha. Se dibujan en línea
+// (sin <use>) para que las patas y la cola se puedan animar con CSS.
+import type { Pet } from '../data/seasons';
+
+interface Props {
+  sprite: Pet['sprite'];
+}
+
+const { sprite } = Astro.props;
+
+const fur = { 'cat-pumpkin': '#f6b26b', 'cat-ghost': '#e7ebf2', 'cat-witch': '#1c1f26' }[sprite];
+const legs = sprite === 'cat-ghost' ? '#cfd6e0' : fur;
+---
+
+<svg viewBox="0 0 120 90" width="128" height="96" aria-hidden="true">
+  <path class="tail" d="M28 52 C12 50 6 32 16 22" fill="none" stroke={fur} stroke-width="7" stroke-linecap="round" />
+  <g fill={legs}>
+    <rect class="leg" x="33" y="58" width="7" height="20" rx="3.5" />
+    <rect class="leg leg-b" x="44" y="58" width="7" height="20" rx="3.5" />
+    <rect class="leg leg-b" x="70" y="58" width="7" height="20" rx="3.5" />
+    <rect class="leg" x="81" y="58" width="7" height="20" rx="3.5" />
+  </g>
+
+  {
+    sprite === 'cat-pumpkin' && (
+      <>
+        <ellipse cx="57" cy="50" rx="33" ry="20" fill="#f07b1f" />
+        <path d="M40 33 Q34 50 40 68 M57 30 V70 M74 33 Q80 50 74 68" fill="none" stroke="#c85d10" stroke-width="2.5" />
+        <path d="M46 44 l5 -7 l5 7 z M60 44 l5 -7 l5 7 z" fill="#3a1d05" />
+        <path d="M45 54 q12 9 26 0 l-4 3 l-3 -2 l-3 3 l-3 -3 l-3 3 l-3 -2 z" fill="#3a1d05" />
+        <polygon points="80,27 83,10 92,24" fill={fur} />
+        <polygon points="95,23 103,9 105,28" fill={fur} />
+        <circle cx="91" cy="38" r="16" fill={fur} />
+        <path d="M90 22 q2 -8 8 -9" fill="none" stroke="#3f8f3a" stroke-width="3" stroke-linecap="round" />
+        <path d="M93 16 q6 -6 10 1 q-6 3 -10 -1 z" fill="#4ade80" />
+        <circle cx="98" cy="35" r="3.2" fill="#1a1205" />
+        <circle cx="99" cy="34" r="1" fill="#fff" />
+        <path d="M104 41 l3 1 l-2 2 z" fill="#ff8fab" />
+        <path d="M100 44 h10 M100 46 l9 3" stroke="#8a5a2b" stroke-width="0.8" />
+      </>
+    )
+  }
+
+  {
+    sprite === 'cat-ghost' && (
+      <>
+        <path
+          d="M22 66 C22 40 40 26 62 28 C72 14 104 14 108 36 C112 52 104 62 96 66 q-5 5 -10 0 q-5 5 -10 0 q-5 5 -10 0 q-5 5 -10 0 q-5 5 -10 0 q-5 5 -10 0 q-5 5 -10 0 z"
+          fill="#f4f6fb"
+          stroke="#c9d1dc"
+          stroke-width="1.5"
+        />
+        <path d="M84 21 l3 -7 l4 6 M99 19 l5 -6 l1 8" fill="#f4f6fb" stroke="#c9d1dc" stroke-width="1.5" stroke-linejoin="round" />
+        <ellipse cx="88" cy="36" rx="3.2" ry="4.6" fill="#1b2230" />
+        <ellipse cx="100" cy="36" rx="3.2" ry="4.6" fill="#1b2230" />
+        <ellipse cx="94" cy="47" rx="3" ry="2.2" fill="#1b2230" opacity="0.7" />
+      </>
+    )
+  }
+
+  {
+    sprite === 'cat-witch' && (
+      <>
+        <ellipse cx="57" cy="52" rx="32" ry="17" fill={fur} />
+        <path d="M80 36 C64 34 42 38 30 50 C38 62 54 58 62 54 C70 50 76 44 80 36 z" fill="#7b4dd6" />
+        <polygon points="80,27 83,12 92,24" fill={fur} />
+        <polygon points="95,23 103,11 105,28" fill={fur} />
+        <circle cx="91" cy="38" r="16" fill={fur} />
+        <ellipse cx="91" cy="24" rx="20" ry="4" fill="#5b34b0" />
+        <path d="M78 23 L96 -4 L104 22 z" fill="#7b4dd6" />
+        <path d="M81 20 L102 19 L103 22 L80 23 z" fill="#f7d046" />
+        <ellipse cx="98" cy="37" rx="3.4" ry="3.8" fill="#f7d046" />
+        <ellipse cx="98.6" cy="37" rx="1.2" ry="3" fill={fur} />
+        <path d="M104 42 l3 1 l-2 2 z" fill="#ff8fab" />
+        <path d="M100 45 h10 M100 47 l9 3" stroke="#7a8190" stroke-width="0.8" />
+      </>
+    )
+  }
+</svg>

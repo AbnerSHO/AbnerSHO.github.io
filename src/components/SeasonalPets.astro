@@ -1,0 +1,209 @@
+---
+// Franja al final de la página donde caminan mascotas de temporada.
+// Se genera oculta y el script la muestra solo si la fecha local cae en la
+// temporada (o con ?temporada=<id>), y si quien visita no la ocultó.
+import CatSprite from './CatSprite.astro';
+import { seasons } from '../data/seasons';
+---
+
+{
+  seasons.map((season) => (
+    <section
+      class="season-strip relative h-44 overflow-hidden border-t border-line bg-gradient-to-b from-[#1b1436] to-[#3a2466]"
+      aria-label={`Decoración de ${season.label}`}
+      data-season={season.id}
+      data-from={season.from}
+      data-to={season.to}
+      hidden
+    >
+      <div class="absolute top-4 left-[12%] size-10 rounded-full bg-[#f7e7b4] shadow-[0_0_40px_10px] shadow-[#f7e7b4]/25" aria-hidden="true" />
+      <span class="absolute top-6 left-[30%] animate-pulse text-xl" aria-hidden="true">🦇</span>
+      <span class="absolute top-10 right-[22%] animate-pulse text-lg [animation-delay:1s]" aria-hidden="true">🦇</span>
+      <span class="absolute bottom-3 left-[6%] text-2xl" aria-hidden="true">🎃</span>
+      <span class="absolute right-[8%] bottom-3 text-3xl" aria-hidden="true">🎃</span>
+      <div class="absolute inset-x-0 bottom-0 h-3 bg-[#22163f]" aria-hidden="true" />
+
+      {season.pets.map((pet, i) => (
+        <div
+          class="pet"
+          style={`--d: ${pet.duration}s; --delay: ${pet.delay}s; --rest: ${18 + i * 30}%`}
+          tabindex="0"
+          role="img"
+          aria-label={pet.says}
+        >
+          <span class="bubble">{pet.says}</span>
+          <CatSprite sprite={pet.sprite} />
+        </div>
+      ))}
+
+      <button
+        type="button"
+        class="absolute top-3 right-3 rounded-full border border-line bg-ink/70 px-3 py-1 text-sm text-muted backdrop-blur transition-colors hover:text-fg"
+        data-season-hide
+      >
+        Ocultar gatos
+      </button>
+    </section>
+  ))
+}
+
+<button
+  type="button"
+  class="mx-auto my-5 block text-sm text-muted underline-offset-4 hover:text-accent hover:underline"
+  data-season-show
+  hidden
+>
+  🎃 Ver los gatos de temporada
+</button>
+
+<style>
+  .pet {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    animation: walk var(--d) linear var(--delay) infinite;
+    cursor: pointer;
+  }
+  .pet :global(svg) {
+    display: block;
+    overflow: visible;
+    animation: bob 0.45s ease-in-out infinite alternate;
+    filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.45));
+  }
+  .pet :global(.leg) {
+    transform-box: fill-box;
+    transform-origin: top;
+    animation: step 0.45s ease-in-out infinite alternate;
+  }
+  .pet :global(.leg.leg-b) {
+    animation-direction: alternate-reverse;
+  }
+  .pet :global(.tail) {
+    transform-box: fill-box;
+    transform-origin: 100% 100%;
+    animation: wag 1.1s ease-in-out infinite alternate;
+  }
+  .bubble {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    translate: -50% 6px;
+    white-space: nowrap;
+    border-radius: 999px;
+    background: white;
+    color: #0b1118;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s,
+      translate 0.2s;
+  }
+  .pet:is(:hover, :focus-visible) {
+    z-index: 1;
+  }
+  .pet:is(:hover, :focus-visible),
+  .pet:is(:hover, :focus-visible) :global(svg),
+  .pet:is(:hover, :focus-visible) :global(.leg),
+  .pet:is(:hover, :focus-visible) :global(.tail) {
+    animation-play-state: paused;
+  }
+  .pet:is(:hover, :focus-visible) .bubble {
+    opacity: 1;
+    translate: -50% -4px;
+  }
+
+  @keyframes walk {
+    from {
+      transform: translateX(-150px);
+    }
+    to {
+      transform: translateX(calc(100vw + 20px));
+    }
+  }
+  @keyframes bob {
+    to {
+      transform: translateY(-3px);
+    }
+  }
+  @keyframes step {
+    from {
+      transform: rotate(-18deg);
+    }
+    to {
+      transform: rotate(18deg);
+    }
+  }
+  @keyframes wag {
+    from {
+      transform: rotate(-10deg);
+    }
+    to {
+      transform: rotate(14deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pet,
+    .pet :global(svg),
+    .pet :global(.leg),
+    .pet :global(.tail) {
+      animation: none;
+    }
+    .pet {
+      left: var(--rest);
+    }
+  }
+</style>
+
+<script>
+  const KEY = 'seasonal-pets-hidden';
+  const showButton = document.querySelector<HTMLButtonElement>('[data-season-show]');
+
+  const read = (): string | null => {
+    try {
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  };
+  const write = (value: string | null) => {
+    try {
+      if (value === null) localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, value);
+    } catch {
+      // Sin almacenamiento disponible: solo afecta esta visita.
+    }
+  };
+
+  const now = new Date();
+  const today = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const forced = new URLSearchParams(location.search).get('temporada');
+  const inRange = (from: string, to: string) =>
+    from <= to ? today >= from && today <= to : today >= from || today <= to;
+
+  const strip = [...document.querySelectorAll<HTMLElement>('[data-season]')].find((el) =>
+    forced ? el.dataset.season === forced : inRange(el.dataset.from!, el.dataset.to!),
+  );
+
+  if (strip) {
+    // Se recuerda por temporada y año: el próximo Halloween vuelven a salir.
+    const id = `${strip.dataset.season}-${now.getFullYear()}`;
+    const render = () => {
+      const hidden = read() === id;
+      strip.hidden = hidden;
+      if (showButton) showButton.hidden = !hidden;
+    };
+    strip.querySelector('[data-season-hide]')?.addEventListener('click', () => {
+      write(id);
+      render();
+    });
+    showButton?.addEventListener('click', () => {
+      write(null);
+      render();
+    });
+    render();
+  }
+</script>

@@ -23,12 +23,9 @@ En GitHub: Settings → Pages → Source: **GitHub Actions**.
 
 ## Pendientes
 
-- [ ] **Mascotas de temporada**: gatos con disfraz de Halloween (calabaza, fantasma, bruja) que caminan por la parte baja de la página, al estilo de las mascotas del navegador.
-  - Sprites SVG o PNG animados con CSS (`steps()` + `translateX`), sin librerías.
-  - Se activa solo en un rango de fechas (p. ej. 20 oct – 2 nov) desde un archivo `src/data/seasons.ts`, para después agregar otras temporadas: Día de Muertos (cempasúchil, xoloitzcuintle), Navidad.
-  - Botón para ocultarlas (se recuerda en `localStorage`) y desactivadas con `prefers-reduced-motion`.
-  - Que no tapen contenido: `pointer-events: none`, detrás del footer.
-  - Al pasar el mouse sobre un gato, que se detenga y maúlle con un globo de texto.
+- [x] **Mascotas de temporada**: gatos con disfraz de Halloween que caminan al final de la página (20 oct – 1 nov).
+  Temporadas en `src/data/seasons.ts`, dibujos en `src/components/CatSprite.astro`. Vista previa fuera de fecha: `/?temporada=halloween`.
+- [ ] Más temporadas: Día de Muertos (cempasúchil, xoloitzcuintle) y Navidad.
 - [ ] Versión en inglés (`/en`) desde el mismo `src/data/cv.ts`.
 - [ ] "Pregúntale a mi CV": chat con RAG sobre la experiencia (necesita backend y control de costos).
 - [ ] Imagen Open Graph (vista previa para LinkedIn/WhatsApp).
