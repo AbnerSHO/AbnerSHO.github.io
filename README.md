@@ -20,13 +20,3 @@ npm run build    # genera dist/
 
 `.github/workflows/deploy.yml` publica en cada push a `master`.
 En GitHub: Settings → Pages → Source: **GitHub Actions**.
-
-## Pendientes
-
-- [x] **Mascotas de temporada**: gatos con disfraz de Halloween que caminan al final de la página (20 oct – 1 nov).
-  Temporadas en `src/data/seasons.ts`, dibujos en `src/components/CatSprite.astro`. Vista previa fuera de fecha: `/?temporada=halloween`.
-- [ ] Más temporadas: Día de Muertos (cempasúchil, xoloitzcuintle) y Navidad.
-- [ ] Versión en inglés (`/en`) desde el mismo `src/data/cv.ts`.
-- [ ] "Pregúntale a mi CV": chat con RAG sobre la experiencia (necesita backend y control de costos).
-- [x] Imagen Open Graph (`public/og.jpg`, plantilla en `scripts/og.html`)
-- [ ] Probar en celular: tarjetas que se revelan al hacer scroll y la galería.
